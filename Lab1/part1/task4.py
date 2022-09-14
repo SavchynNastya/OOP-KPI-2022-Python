@@ -10,7 +10,6 @@ parser.add_argument("-n", "--bars_number", type=int)
 
 def find_max_weight(capacity, weights, n):
     knapsack = [[0 for val in range(capacity + 1)] for val in range(n + 1)]
-
     for i in range(n + 1):
         for c in range(capacity + 1):
             if not i or not c:
@@ -37,5 +36,12 @@ def find_max_weight(capacity, weights, n):
 
 args = parser.parse_args()
 # print(args)
-
-print(find_max_weight(args.capacity, args.weights, args.bars_number))
+try:
+    if args.bars_number == len(args.weights):
+        print(find_max_weight(args.capacity, args.weights, args.bars_number))
+    else:
+        raise IndexError
+except ValueError:
+    print("Please, enter some numbers")
+except IndexError:
+    print("Number of bars you entered is too big")
