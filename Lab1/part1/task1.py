@@ -15,7 +15,10 @@ if args.sign == '-':
 elif args.sign == '+':
     print(args.num1 + args.num2)
 elif args.sign == '/':
-    print(args.num1 / args.num2)
+    try:
+        print(args.num1 / args.num2)
+    except ZeroDivisionError:
+        print("Division by zero...")
 elif args.sign == '*':
     print(args.num1 * args.num2)
 else:
