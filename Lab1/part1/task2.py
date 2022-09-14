@@ -7,10 +7,9 @@ parser = argparse.ArgumentParser()
 # add positional arguments
 parser.add_argument("action", type=str, help="What to do with numbers?")
 parser.add_argument("numbers", type=float, nargs="*")
-# parser.add_argument("num2", type=int, help="Second number")
 
 args = parser.parse_args()
-print(args)
+# print(args)
 
 func = ''
 try:
