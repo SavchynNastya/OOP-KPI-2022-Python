@@ -9,7 +9,6 @@ parser.add_argument("sign", type=str, help="What to do with numbers?")
 parser.add_argument("num2", type=str, help="Second number")
 
 args = parser.parse_args()
-# print(args)
 
 try:
     num1 = int(args.num1)
