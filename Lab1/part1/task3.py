@@ -4,7 +4,7 @@ import argparse
 parser = argparse.ArgumentParser()
 
 # add positional argument
-parser.add_argument("expression", type=str)
+parser.add_argument("expression", type=str, nargs='?', default=None)
 
 
 def calculate(accum, operator, num):
@@ -17,7 +17,6 @@ def calculate(accum, operator, num):
 
 
 def check_if_ebnf(expression):
-    # тут натупила
     if not expression:
         return False, None
     operator = ""
@@ -40,6 +39,6 @@ def check_if_ebnf(expression):
 
 
 args = parser.parse_args()
-print(args)
+# print(args)
 
 print(check_if_ebnf(args.expression))
