@@ -4,9 +4,9 @@ import argparse
 parser = argparse.ArgumentParser()
 
 # add positional arguments
-parser.add_argument("num1", type=str, help="First number")
-parser.add_argument("sign", type=str, help="What to do with numbers?")
-parser.add_argument("num2", type=str, help="Second number")
+parser.add_argument("num1", type=str, help="First number", nargs='?', default=None)
+parser.add_argument("sign", type=str, help="What to do with numbers?", nargs='?', default=None)
+parser.add_argument("num2", type=str, help="Second number", nargs='?', default=None)
 
 args = parser.parse_args()
 
@@ -29,3 +29,5 @@ try:
         exit(1)
 except ValueError:
     print("You entered not a number")
+except TypeError:
+    print("Wrong argument number")
