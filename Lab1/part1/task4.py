@@ -3,9 +3,9 @@ import argparse
 parser = argparse.ArgumentParser()
 
 # add optional arguments
-parser.add_argument("-W", "--capacity", type=int)
+parser.add_argument("-W", "--capacity", type=int, nargs='?', default=None)
 parser.add_argument("-w", "--weights",  type=int, nargs='*')
-parser.add_argument("-n", "--bars_number", type=int)
+parser.add_argument("-n", "--bars_number", type=int, nargs='?', default=None)
 
 
 def find_max_weight(capacity, weights, n):
@@ -19,6 +19,8 @@ def find_max_weight(capacity, weights, n):
                                      knapsack[i-1][c])
             else:
                 knapsack[i][c] = knapsack[i-1][c]
+        # print(knapsack)
+        # print('\n\n')
 
     return knapsack[n][capacity]
 
@@ -37,11 +39,13 @@ def find_max_weight(capacity, weights, n):
 args = parser.parse_args()
 # print(args)
 try:
-    if args.bars_number == len(args.weights):
+    if not args.bars_number or not args.weights or not args.capacity:
+        raise ValueError
+    elif args.bars_number == len(args.weights):
         print(find_max_weight(args.capacity, args.weights, args.bars_number))
     else:
         raise IndexError
 except ValueError:
-    print("Please, enter some numbers")
+    print("Please, enter all arguments")
 except IndexError:
-    print("Number of bars you entered is too big")
+    print("Number of bars you entered is wrong")
