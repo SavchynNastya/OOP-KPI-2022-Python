@@ -1,11 +1,12 @@
 import argparse
 
-parser = argparse.ArgumentParser()
 
-# add optional arguments
-parser.add_argument("-W", "--capacity", type=int, nargs='?', default=None)
-parser.add_argument("-w", "--weights",  type=int, nargs='*')
-parser.add_argument("-n", "--bars_number", type=int, nargs='?', default=None)
+def to_int(num_str):
+    try:
+        numbers = list(map(int, num_str))
+        return numbers
+    except ValueError:
+        print(f"Wrong value type - {num_str}")
 
 
 def find_max_weight(capacity, weights, n):
@@ -19,33 +20,33 @@ def find_max_weight(capacity, weights, n):
                                      knapsack[i-1][c])
             else:
                 knapsack[i][c] = knapsack[i-1][c]
-        # print(knapsack)
-        # print('\n\n')
-
     return knapsack[n][capacity]
 
-# def find_max_weight(capacity, weights):
-    # store = [[True] + [False] * capacity]
-    # for weight in range(len(weights)):
-    #     store.append(store[-1][:])
-    #     for w in range(weights[weight], capacity + 1):
-    #         store[-1][w] = store[-2][w] or store[-2][w - weights[weight]]
-    #     store = store[-1:]
-    # for w in range(capacity, -1, -1):
-    #     if store[-1][w]:
-    #         return w
 
+parser = argparse.ArgumentParser()
+
+# add optional arguments
+parser.add_argument("-W", "--capacity", type=str, nargs='*', default=None)
+parser.add_argument("-w", "--weights",  type=str, nargs='*', default=None)
+parser.add_argument("-n", "--bars_number", type=str, nargs='*', default=None)
 
 args = parser.parse_args()
-# print(args)
+
 try:
-    if not args.bars_number or not args.weights or not args.capacity:
-        raise ValueError
-    elif args.bars_number == len(args.weights):
-        print(find_max_weight(args.capacity, args.weights, args.bars_number))
+    if not args.bars_number or not args.weights or not args.capacity \
+            or len(args.capacity) != 1 or len(args.bars_number) != 1:
+        raise TypeError
     else:
-        raise IndexError
-except ValueError:
-    print("Please, enter all arguments")
+        args.capacity = to_int(args.capacity)
+        args.weights = to_int(args.weights)
+        args.bars_number = to_int(args.bars_number)
+
+        if args.bars_number[0] != len(args.weights):
+            raise IndexError
+
+        print(find_max_weight(args.capacity[0], args.weights, args.bars_number[0]))
+
+except TypeError:
+    print("Wrong number of arguments")
 except IndexError:
     print("Number of bars you entered is wrong")

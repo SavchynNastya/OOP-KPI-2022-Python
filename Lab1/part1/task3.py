@@ -1,12 +1,6 @@
 import argparse
 
 
-parser = argparse.ArgumentParser()
-
-# add positional argument
-parser.add_argument("expression", type=str, nargs='?', default=None)
-
-
 def calculate(accum, operator, num):
     if operator == "-":
         return accum - num
@@ -38,7 +32,16 @@ def check_if_ebnf(expression):
     return True, calculate(accumulator, operator, num)
 
 
-args = parser.parse_args()
-# print(args)
+parser = argparse.ArgumentParser()
 
-print(check_if_ebnf(args.expression))
+# add positional argument
+parser.add_argument("expression", type=str, nargs='*', default=None)
+args = parser.parse_args()
+
+try:
+    if len(args.expression) > 1:
+        raise TypeError
+    else:
+        print(check_if_ebnf(args.expression))
+except TypeError:
+    print("Too many arguments passed, you should enter 1 expression")

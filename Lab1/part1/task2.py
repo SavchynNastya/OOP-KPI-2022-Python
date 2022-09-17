@@ -14,8 +14,8 @@ def convert_to_float(num_str):
 parser = argparse.ArgumentParser()
 
 # add positional arguments
-parser.add_argument("action", type=str, help="What to do with numbers?")
-parser.add_argument("numbers", type=str, nargs="+")
+parser.add_argument("action", type=str, help="What to do with numbers?", nargs='?', default=None)
+parser.add_argument("numbers", type=str, nargs="*", default=None)
 
 args = parser.parse_args()
 
@@ -24,6 +24,8 @@ args = parser.parse_args()
 
 func = ''
 try:
+    if not args.action or not args.numbers:
+        raise TypeError
     args.numbers = convert_to_float(args.numbers)
     if hasattr(operator, args.action):
         func = getattr(operator, args.action)
