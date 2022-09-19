@@ -35,6 +35,8 @@ try:
         print(func(*args.numbers))
     else:
         raise NameError
+except ValueError:
+    print("Impossible to get value")
 except NameError:
     print(f"The function {args.action} is not defined.")
 except TypeError:
