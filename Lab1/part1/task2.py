@@ -3,9 +3,9 @@ import operator
 import math
 
 
-def convert_to_float(num_str):
+def convert_to_float(str_list):
     try:
-        numbers = list(map(float, num_str))
+        numbers = list(map(float, str_list))
         return numbers
     except ValueError:
         print("Wrong value type")

@@ -4,7 +4,10 @@ import operator
 
 def main():
 
-    operators = {'+': operator.add, '-': operator.sub, '*': operator.mul, '/': operator.truediv}
+    operators = {'+': operator.add,
+                 '-': operator.sub,
+                 '*': operator.mul,
+                 '/': operator.truediv}
 
     parser = argparse.ArgumentParser()
 
