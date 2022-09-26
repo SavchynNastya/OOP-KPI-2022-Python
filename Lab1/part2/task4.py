@@ -28,7 +28,6 @@ class FileProcessing:
         return self._sentences
 
     def get_info(self):
-        file.close()
         if not self._text:
             print("File is empty!")
         else:
@@ -42,6 +41,7 @@ def main():
         f = input("Enter the name of file(with path and extension): ")  # for_task4.txt
         file = open(rf"{f}", "r")
         file_processing = FileProcessing(file)
+        file.close()
         file_processing.get_info()
     except IOError:
         print("There's no such file")

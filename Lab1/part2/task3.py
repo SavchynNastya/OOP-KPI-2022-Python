@@ -161,7 +161,7 @@ def main():
     while True:
         try:
             pq = input("Please enter the price and quantity of product('q' to quit): ")
-            if pq == 'q':
+            if pq == 'q' or pq == 'Q':
                 break
 
             price, quantity = pq.split()

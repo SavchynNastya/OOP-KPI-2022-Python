@@ -12,6 +12,20 @@ codes = {
     }
 
 
+def search_node(node, code_value):
+    if node is None:
+        return False
+    if node.code == code_value:
+        return True
+
+    left_tree = search_node(node.left, code_value)
+    if left_tree:
+        return True
+
+    right_tree = search_node(node.right, code_value)
+    return right_tree
+
+
 class BinaryTree:
 
     def __init__(self, code, qty):
@@ -23,18 +37,21 @@ class BinaryTree:
         self.quantity = qty
 
     def insert(self, code, qty):
-        if int(code) < int(self.code):
-            if self.left is None:
-                self.left = BinaryTree(code, qty)
+        if not search_node(self, code):
+            if int(code) < int(self.code):
+                if self.left is None:
+                    self.left = BinaryTree(code, qty)
+                else:
+                    self.left.insert(code, qty)
+            elif int(code) > int(self.code):
+                if self.right is None:
+                    self.right = BinaryTree(code, qty)
+                else:
+                    self.right.insert(code, qty)
             else:
-                self.left.insert(code, qty)
-        elif int(code) > int(self.code):
-            if self.right is None:
-                self.right = BinaryTree(code, qty)
-            else:
-                self.right.insert(code, qty)
+                self.code = code
         else:
-            self.code = code
+            raise ValueError("This item is already added.")
 
 
 def compute_cost(products):
@@ -51,7 +68,7 @@ tree = 0
 while True:
     try:
         order = input("Enter the code of product (001-010) and quantity you want to order or 'q' to stop: ")
-        if order == "q":
+        if order == "q" or order == 'Q':
             break
         else:
             code, quantity = order.split()
@@ -74,6 +91,8 @@ while True:
             print("Too many arguments entered (should be 2)")
         elif "invalid literal" in str(e):
             print("You should enter only integers")
+        elif "item is already added" in str(e):
+            print("This item is already added.")
         else:
             print("Invalid value entered, code should be in range of 001-010")
 
