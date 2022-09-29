@@ -38,8 +38,7 @@ class FileProcessing:
 
 def main():
     try:
-        f = input("Enter the name of file(with path and extension): ")  # for_task4.txt
-        file = open(rf"{f}", "r")
+        file = open("for_task4.txt", "r")
         file_processing = FileProcessing(file)
         file.close()
         file_processing.get_info()

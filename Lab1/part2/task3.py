@@ -153,10 +153,14 @@ def main():
     customer = Customer("Savchyn", "Anastasiia", "Rostyslavivna", "0968916243")
 
     product_list = []
-    shirt = Product(51.5, "White oversize shirt", 3, length=80, width=50)
-    tv = Product(1999, "Big TV", 1, length=120, width=15, height=50)
-    chair = Product(100, "Comfortable office chair", 2, width=65, height=120)
-    product_list.extend([shirt, tv, chair])
+
+    try:
+        shirt = Product(51.5, "White oversize shirt", 3, length=80, width=50)
+        tv = Product(1999, "Big TV", 1, length=120, width=15, height=50)
+        chair = Product(100, "Comfortable office chair", 2, width=65, height=120)
+        product_list.extend([shirt, tv, chair])
+    except ValueError as e:
+        print(f"Product instance creation is failed: {str(e)}")
 
     while True:
         try:
@@ -177,8 +181,9 @@ def main():
         except ValueError as e:
             print(str(e))
 
-    order = Order(customer, product_list)
-    print(order)
+    if product_list:
+        order = Order(customer, product_list)
+        print(order)
 
 
 if __name__ == "__main__":

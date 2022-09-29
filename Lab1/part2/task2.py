@@ -3,9 +3,6 @@ from math import gcd
 
 class Rational:
     def __init__(self, num, den):
-        # if not isinstance(num, int) or not isinstance(den, int):
-        #     raise TypeError("Input should be integer")
-
         self.__numerator = num
         self.__denominator = den
         self.reduce_fraction()
@@ -62,7 +59,6 @@ class Rational:
     def print(self):
         self.print_fraction()
         self.print_to_float_fraction()
-        # print("\n")
 
 
 def main():
@@ -79,8 +75,8 @@ def main():
         num2, den2 = f2.split()
         f2 = Rational(int(num2), int(den2))
 
-        f = f1.add(f2)
         print("Sum: ")
+        f = f1.add(f2)
         f.print()
 
         print("Subtraction: ")
@@ -98,10 +94,12 @@ def main():
     except ValueError as e:
         if "not enough values to unpack" in str(e):
             print("Not enough arguments entered (should be 2)")
-        if "too many values" in str(e):
+        elif "too many values" in str(e):
             print("Too many arguments entered (should be 2)")
-        if "invalid literal" in str(e):
+        elif "invalid literal" in str(e):
             print("You should enter only integers")
+        else:
+            print(str(e))
 
 
 if __name__ == "__main__":

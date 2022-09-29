@@ -1,5 +1,15 @@
 MAX_STUDENTS = 20
 
+student_data = [
+    ["Mary", "Amosova", "14822", [2, 3, 5, 5, 2]],
+    ["Lena", "Peterson", "15622", [7, 8, 5, 5, 2]],
+    ["Tony", "Berry", "13922", [2, 3, 5, 5, 3]],
+    ["Sonya", "Light", "10219", [2, 8, 8, 8, 2]],
+    ["Kate", "Smith", "87867", [1, 3, 5, 8, 2]],
+    ["Elizabeth", "Cage", "12322", [7, 3, 5, 5, 9]],
+    ["Anna", "Bett", "14340", [1, 3, 1, 5, 2]]
+]
+
 
 def show_best_students(grade, name, surname):
     print(f"{grade} - {name} {surname}")
@@ -100,18 +110,12 @@ class Student:
 def main():
     students = []
 
-    try:
-        s1 = Student("Mary", "Amosova", "14622", [2, 3, 5, 5, 2])
-        s2 = Student("Lena", "Peterson", "15622", [7, 8, 5, 5, 2])
-        s3 = Student("Tony", "Berry", "13922", [2, 3, 5, 5, 3])
-        s4 = Student("Sonya", "Light", "10219", [2, 8, 8, 8, 2])
-        s5 = Student("Kate", "Smith", "87867", [1, 3, 5, 8, 2])
-        s6 = Student("Elizabeth", "Cage", "12322", [7, 3, 5, 5, 9])
-        s7 = Student("Anna", "Bett", "14340", [1, 3, 1, 5, 2])
-
-        students.extend([s1, s2, s3, s4, s5, s6, s7])
-    except ValueError as e:
-        print(str(e))
+    for stud in student_data:
+        try:
+            s = Student(stud[0], stud[1], stud[2], stud[3])
+            students.append(s)
+        except ValueError as e:
+            print(f"Student ({stud[0]} {stud[1]}) instance creation is failed:\n  {str(e)}")
 
     while True:
         try:
@@ -119,27 +123,13 @@ def main():
             if name == 'q' or name == 'Q':
                 break
 
-            # if not isinstance(name, str) or len(name) < 3 or name.isdigit():
-            #     raise TypeError("Invalid value entered (should be a string)")
-            #     continue
-
             surname = input("Enter the SURNAME: ")
-            # if not isinstance(surname, str) or len(surname) < 3 or surname.isdigit():
-            #     raise TypeError("Invalid value entered (should be a string)")
-            #     continue
 
             rec_book_num = input("Enter the RECORD BOOK(5 numbers code): ")
-            # if not isinstance(rec_book_num, str) or len(rec_book_num) != 5 or rec_book_num.isalpha():
-            #     raise TypeError("Invalid value entered (should be a 5 numbers code)")
-            #     continue
 
             grades = input("Enter at least 5 last GRADES of student: ")
-            grades = list(grades.split())
-            # grades = list(map(float, grades))
 
-            # if not grades:
-            #     raise TypeError("Invalid values entered, should be numeric")
-            #     continue
+            grades = list(grades.split())
 
             s = Student(name, surname, rec_book_num, grades)
             students.append(s)
@@ -147,8 +137,9 @@ def main():
         except ValueError as e:
             print(str(e))
 
-    group = Group(students)
-    group.find_best_students()
+    if students:
+        group = Group(students)
+        group.find_best_students()
 
 
 if __name__ == "__main__":

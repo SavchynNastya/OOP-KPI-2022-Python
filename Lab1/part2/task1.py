@@ -16,14 +16,14 @@ class Rectangle:
         if 0.0 < a < 20.0:
             self.__length = a
         else:
-            raise TypeError
+            raise ValueError
 
     @width.setter
     def width(self, b):
         if 0.0 < b < 20.0:
             self.__width = b
         else:
-            raise TypeError
+            raise ValueError
 
     def perimeter(self):
         return 2 * (self.__width + self.__length)
@@ -39,10 +39,15 @@ def main():
         print(f"Perimeter - {box.perimeter()}")
         print(f"Area - {box.area()}")
 
-    except ValueError:
-        print("Too many values entered!")
-    except TypeError:
-        print("You should enter float value (0.0 to 20.0)")
+    except ValueError as e:
+        if "not enough values to unpack" in str(e):
+            print("Not enough arguments entered (should be 2)")
+        elif "too many values" in str(e):
+            print("Too many arguments entered (should be 2)")
+        elif "could not convert" in str(e):
+            print("You should enter only float values")
+        else:
+            print(str(e))
 
 
 if __name__ == "__main__":
