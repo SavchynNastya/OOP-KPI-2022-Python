@@ -51,12 +51,19 @@ class Group:
 
 
 class Student:
+    __students = []
+
     def __init__(self, name, surname, rec_b, grades):
         self.name = name
         self.surname = surname
         self.record_book = rec_b
         self.grades = grades
         self.average = self.find_average_score()
+
+        for stud in Student.__students:
+            if (stud[0], stud[1]) == (self.surname, self.name):
+                raise ValueError("Such student already exists.")
+        Student.__students.append([surname, name])
 
     @property
     def name(self):
