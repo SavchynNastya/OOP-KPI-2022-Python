@@ -9,10 +9,6 @@ student_data = [
 ]
 
 
-def show_best_students(grade, name, surname):
-    return f"{grade} - {name} {surname}"
-
-
 class Group:
     GROUP_LIST = []
 
@@ -26,11 +22,7 @@ class Group:
 
     def find_best_students(self):
         best_results = sorted(self.GROUP_LIST, key=lambda x: x.average, reverse=True)[:5]
-
-        for student in range(len(best_results)):
-            print(show_best_students(best_results[student].average,
-                  best_results[student].name,
-                  best_results[student].surname))
+        return best_results
 
 
 class Student:
@@ -97,6 +89,10 @@ class Student:
         return sum / grades_len
 
 
+def show_best_students(grade, name, surname):
+    return f"{grade} - {name} {surname}"
+
+
 def main():
     students = []
 
@@ -131,7 +127,11 @@ def main():
 
     try:
         group = Group(students)
-        group.find_best_students()
+        best_students = group.find_best_students()
+        for student in best_students:
+            print(show_best_students(student.average,
+                                     student.name,
+                                     student.surname))
 
     except ValueError as e:
         print(str(e))
