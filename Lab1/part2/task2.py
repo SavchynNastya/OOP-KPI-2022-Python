@@ -3,6 +3,8 @@ from math import gcd
 
 class Rational:
     def __init__(self, num, den):
+        if not isinstance(num, int) or not isinstance(den, int):
+            raise TypeError("You should enter only integers")
         self.__numerator = num
         self.__denominator = den
         self.reduce_fraction()
@@ -19,14 +21,9 @@ class Rational:
         self.set_values(num, den)
 
     def set_values(self, num, den):
-        if num == 0:
-            self.__numerator = 0
-            self.__denominator = 1
-        elif den == 0:
+        if den == 0:
             raise ZeroDivisionError("Denominator can not be 0")
-        else:
-            self.__numerator = num
-            self.__denominator = den
+        self.__numerator, self.__denominator = (0, 1) if num == 0 else (num, den)
 
     def add(self, fr2):
         num = self.__numerator * fr2.__denominator + fr2.__numerator * self.__denominator
@@ -50,23 +47,41 @@ class Rational:
         temp = Rational(fr2.__denominator, fr2.__numerator)
         return self.multiply(temp)
 
-    def print_fraction(self):
-        print(f"{self.__numerator}/{self.__denominator}")
+    def get_fraction(self):
+        return f"{self.__numerator}/{self.__denominator}"
 
-    def print_to_float_fraction(self):
-        print(round((self.__numerator / self.__denominator), 2))
+    def get_to_float_fraction(self):
+        return f"{round((self.__numerator / self.__denominator), 2)}"
 
     def print(self):
-        self.print_fraction()
-        self.print_to_float_fraction()
+        print(self.get_fraction())
+        print(self.get_to_float_fraction())
 
 
 def main():
     try:
-        f1 = input("Enter the numerator and denominator for the first fraction:")
-        # print(len(f1))
+        fr1 = Rational(5, 8)
+        fr2 = Rational(4, 7)
 
-        num1, den1 = f1.split()  # catch an error when more or less than 2 values is passed
+        print("Sum: ")
+        fr = fr1.add(fr2)
+        fr.print()
+
+        print("Subtraction: ")
+        fr = fr1.subtract(fr2)
+        fr.print()
+
+        print(f"Multiplication: ")
+        fr = fr1.multiply(fr2)
+        fr.print()
+
+        print(f"Division: ")
+        fr = fr1.divide(fr2)
+        fr.print()
+
+        f1 = input("Enter the numerator and denominator for the first fraction:")
+
+        num1, den1 = f1.split()
 
         f1 = Rational(int(num1), int(den1))
 
@@ -100,6 +115,8 @@ def main():
             print("You should enter only integers")
         else:
             print(str(e))
+    except TypeError as e:
+        print(str(e))
 
 
 if __name__ == "__main__":

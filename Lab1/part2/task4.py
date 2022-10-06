@@ -1,49 +1,49 @@
+import re
+
+
 class FileProcessing:
-    def __init__(self, file):
-        self._name = file.name
-        self._text = file.readlines()
-        self._lines = len(self._text)
-        self._characters = 0
-        self._words = 1
-        self._sentences = 0
+    def __init__(self, file_name):
+        self.name = file_name
+        try:
+            file = open(self.name, 'r')
+            file.close()
+        except IOError:
+            print("There's no such file")
 
     def count_characters(self):
-        for i in range(self._lines):
-            for ch in self._text[i]:
-                self._characters += 1
-        return self._characters
+        count = 0
+        file = open(self.name, 'r')
+        for line in file:
+            count += len(line) - line.count(' ') - line.count('\n')
+        file.close()
+        return count
 
     def count_words(self):
-        for i in range(self._lines):
-            for ch in self._text[i]:
-                if ch.isspace():
-                    self._words += 1
-        return self._words
+        count = 0
+        file = open(self.name, 'r')
+        for line in file:
+            count += len(re.findall(r"[A-Za-z']+", line))
+        file.close()
+        return count
 
     def count_sentences(self):
-        for i in range(self._lines):
-            for ch in self._text[i]:
-                if ch == ".":
-                    self._sentences += 1
-        return self._sentences
+        count = 0
+        file = open(self.name, 'r')
+        for line in file:
+            count += len(re.findall(r"\w+[.?!]+", line))
+        file.close()
+        return count
 
     def get_info(self):
-        if not self._text:
-            print("File is empty!")
-        else:
-            print(f"Characters in '{self._name}' - {self.count_characters()}\n"
-                  f"Words in '{self._name}' - {self.count_words()}\n"
-                  f"Sentences in '{self._name}' - {self.count_sentences()}\n")
+        return f"Characters in '{self.name}' - {self.count_characters()}\n"\
+               f"Words in '{self.name}' - {self.count_words()}\n"\
+               f"Sentences in '{self.name}' - {self.count_sentences()}\n"
 
 
 def main():
-    try:
-        file = open("for_task4.txt", "r")
-        file_processing = FileProcessing(file)
-        file.close()
-        file_processing.get_info()
-    except IOError:
-        print("There's no such file")
+    file_name = "for_task4.txt"
+    file_processing = FileProcessing(file_name)
+    print(file_processing.get_info())
 
 
 if __name__ == "__main__":

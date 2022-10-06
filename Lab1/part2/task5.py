@@ -1,5 +1,3 @@
-MAX_STUDENTS = 20
-
 student_data = [
     ["Mary", "Amosova", "14822", [2, 3, 5, 5, 2]],
     ["Lena", "Peterson", "15622", [7, 8, 5, 5, 2]],
@@ -12,46 +10,30 @@ student_data = [
 
 
 def show_best_students(grade, name, surname):
-    print(f"{grade} - {name} {surname}")
+    return f"{grade} - {name} {surname}"
 
 
 class Group:
     GROUP_LIST = []
 
-    def __init__(self, students):
+    def __init__(self, students, max_students=20):
         for student in students:
-            if len(self.GROUP_LIST) < MAX_STUDENTS:
+            if len(self.GROUP_LIST) < max_students:
+                for i in range(len(self.GROUP_LIST)):
+                    if (self.GROUP_LIST[i].name, self.GROUP_LIST[i].surname) == (student.name, student.surname):
+                        raise ValueError("Such student in group already exists.")
                 self.GROUP_LIST.append(student)
 
     def find_best_students(self):
-        average_grades_list = []
+        best_results = sorted(self.GROUP_LIST, key=lambda x: x.average, reverse=True)[:5]
 
-        for student in range(len(self.GROUP_LIST)):
-            average_grades_list.append(round(self.GROUP_LIST[student].average, 1))
-
-            # print(average_grades_list)
-
-        top_grades = []
-        for i in range(0, 5):
-            max_val = 0
-
-            for j in range(len(average_grades_list)):
-                if average_grades_list[j] > max_val:
-                    max_val = average_grades_list[j]
-            # print(max_val)
-            average_grades_list.remove(max_val)
-            top_grades.append(max_val)
-
-        for grade in top_grades:
-            for student in range(len(self.GROUP_LIST)):
-                if grade == self.GROUP_LIST[student].average:
-                    show_best_students(self.GROUP_LIST[student].average,
-                                       self.GROUP_LIST[student].name,
-                                       self.GROUP_LIST[student].surname)
+        for student in range(len(best_results)):
+            print(show_best_students(best_results[student].average,
+                  best_results[student].name,
+                  best_results[student].surname))
 
 
 class Student:
-    __students = []
 
     def __init__(self, name, surname, rec_b, grades):
         self.name = name
@@ -59,11 +41,6 @@ class Student:
         self.record_book = rec_b
         self.grades = grades
         self.average = self.find_average_score()
-
-        for stud in Student.__students:
-            if (stud[0], stud[1]) == (self.surname, self.name):
-                raise ValueError("Such student already exists.")
-        Student.__students.append([surname, name])
 
     @property
     def name(self):
@@ -83,19 +60,25 @@ class Student:
 
     @name.setter
     def name(self, val):
-        if not isinstance(val, str) or len(val) < 3 or val.isdigit():
+        if not isinstance(val, str):
+            raise TypeError("Invalid NAME entered (should be a string)")
+        elif len(val) < 3 or val.isdigit():
             raise ValueError("Invalid NAME entered (should be a string) with more than 3 chars")
         self.__name = val
 
     @surname.setter
     def surname(self, val):
-        if not isinstance(val, str) or len(val) < 3 or val.isdigit():
+        if not isinstance(val, str):
+            raise TypeError("Invalid SURNAME entered (should be a string)")
+        elif len(val) < 3 or val.isdigit():
             raise ValueError("Invalid SURNAME entered (should be a string) with more than 3 chars")
         self.__surname = val
 
     @record_book.setter
     def record_book(self, val):
-        if not isinstance(val, str) or len(val) != 5 or val.isalpha():
+        if not isinstance(val, str):
+            raise TypeError("Invalid RECORD BOOK entered")
+        elif len(val) != 5 or val.isalpha():
             raise ValueError("Invalid RECORD BOOK entered (should be a 5 numbers code)")
         self.__record_book = val
 
@@ -123,6 +106,8 @@ def main():
             students.append(s)
         except ValueError as e:
             print(f"Student ({stud[0]} {stud[1]}) instance creation is failed:\n  {str(e)}")
+        except TypeError as e:
+            print(f"Student ({stud[0]} {stud[1]}) instance creation is failed:\n  {str(e)}")
 
     while True:
         try:
@@ -141,12 +126,15 @@ def main():
             s = Student(name, surname, rec_book_num, grades)
             students.append(s)
 
-        except ValueError as e:
+        except ValueError or TypeError as e:
             print(str(e))
 
-    if students:
+    try:
         group = Group(students)
         group.find_best_students()
+
+    except ValueError as e:
+        print(str(e))
 
 
 if __name__ == "__main__":

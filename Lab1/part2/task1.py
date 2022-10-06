@@ -13,31 +13,36 @@ class Rectangle:
 
     @length.setter
     def length(self, a):
-        if 0.0 < a < 20.0:
-            self.__length = a
-        else:
-            raise ValueError
+        if not isinstance(a, float):
+            raise TypeError("You should enter float values")
+        elif not 0.0 < a < 20.0:
+            raise ValueError("Values must be from 0.0 to 20.0")
+        self.__length = a
 
     @width.setter
     def width(self, b):
-        if 0.0 < b < 20.0:
-            self.__width = b
-        else:
-            raise ValueError
+        if not isinstance(b, float):
+            raise TypeError("You should enter float values")
+        elif not 0.0 < b < 20.0:
+            raise ValueError("Values must be from 0.0 to 20.0")
+        self.__width = b
 
     def perimeter(self):
         return 2 * (self.__width + self.__length)
 
     def area(self):
-        return self.__width * self.__length
+        return round(self.__width * self.__length, 2)
 
 
 def main():
     try:
-        a, b = input("Please enter width and length of your rectangle:").split()
-        box = Rectangle(float(a), float(b))
+        box = Rectangle(5.7, 15.3)
         print(f"Perimeter - {box.perimeter()}")
         print(f"Area - {box.area()}")
+        a, b = input("Please enter width and length of your rectangle:").split()
+        box1 = Rectangle(float(a), float(b))
+        print(f"Perimeter - {box1.perimeter()}")
+        print(f"Area - {box1.area()}")
 
     except ValueError as e:
         if "not enough values to unpack" in str(e):
@@ -48,6 +53,8 @@ def main():
             print("You should enter only float values")
         else:
             print(str(e))
+    except TypeError as e:
+        print(str(e))
 
 
 if __name__ == "__main__":

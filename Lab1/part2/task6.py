@@ -1,21 +1,21 @@
 codes = {
-        ("001", 1): 100,
-        ("002", 2): 160,
-        ("003", 3): 620,
-        ("004", 4): 500,
-        ("005", 5): 230,
-        ("006", 6): 180,
-        ("007", 7): 120,
-        ("008", 8): 150,
-        ("009", 9): 300,
-        ("010", 10): 790
+        "001": 100,
+        "002": 160,
+        "003": 620,
+        "004": 500,
+        "005": 230,
+        "006": 180,
+        "007": 120,
+        "008": 150,
+        "009": 300,
+        "010": 790
     }
 
 
 def search_node(node, code_value):
     if node is None:
         return False
-    if node.code == code_value:
+    if int(node.code) == int(code_value):
         return True
 
     left_tree = search_node(node.left, code_value)
@@ -54,10 +54,14 @@ class BinaryTree:
             raise ValueError("This item is already added.")
 
 
+# in-order traversal
 def compute_cost(products):
-    if products is None:
+    if not products:
         return 0
-    return products.price * products.quantity + compute_cost(products.left) + compute_cost(products.right)
+    sum = compute_cost(products.left)
+    sum += products.price * products.quantity
+    sum += compute_cost(products.right)
+    return sum
 
 
 def get_cost(products):

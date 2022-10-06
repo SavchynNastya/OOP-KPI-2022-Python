@@ -23,26 +23,30 @@ class Product(object):
 
     @price.setter
     def price(self, val):
-        if not isinstance(val, (float, int)) or val <= 0:
-            raise ValueError("Price must be float value")
+        if not isinstance(val, (float, int)):
+            raise TypeError("Price must be float value")
+        elif val <= 0:
+            raise ValueError("Price must be > 0")
         self.__price = val
 
     @desc.setter
     def desc(self, val):
         if not val or not isinstance(val, str):
-            raise ValueError("Description must be a string")
+            raise TypeError("Description must be a string")
         self.__desc = val
 
     @quantity.setter
     def quantity(self, q):
-        if not isinstance(q, int) or q <= 0:
-            raise ValueError("Quantity must be an integer")
+        if not isinstance(q, int):
+            raise TypeError("Quantity must be an integer")
+        elif q <= 0:
+            raise ValueError("Quantity must be > 0")
         self.__quantity = q
 
     @dimensions.setter
     def dimensions(self, val):
         if not val or not isinstance(val, dict):
-            raise ValueError("Dimensions must be passed as a dict")
+            raise TypeError("Dimensions must be passed as a dict")
         self.__dimensions = val
 
     def __str__(self):
@@ -78,25 +82,33 @@ class Customer:
 
     @surname.setter
     def surname(self, val):
-        if not isinstance(val, str) or len(val) < 2 or any(map(str.isdigit, val)):
+        if not isinstance(val, str):
+            raise TypeError("Surname must be a string")
+        elif len(val) < 2 or any(map(str.isdigit, val)):
             raise ValueError("Surname must be a string without numbers and longer than 2 characters")
         self.__surname = val
 
     @name.setter
     def name(self, val):
-        if not isinstance(val, str) or len(val) < 2 or any(map(str.isdigit, val)):
+        if not isinstance(val, str):
+            raise TypeError("Name must be a string")
+        elif len(val) < 2 or any(map(str.isdigit, val)):
             raise ValueError("Name must be a string without numbers and longer than 2 characters")
         self.__name = val
 
     @patronymic.setter
     def patronymic(self, val):
-        if not isinstance(val, str) or len(val) < 2 or any(map(str.isdigit, val)):
+        if not isinstance(val, str):
+            raise TypeError("Patronymic must be a string")
+        elif len(val) < 2 or any(map(str.isdigit, val)):
             raise ValueError("Patronymic must be a string without numbers and longer than 2 characters")
         self.__patronymic = val
 
     @mphone.setter
     def mphone(self, val):
-        if not isinstance(val, str) or len(val) != 10 or not val.isdigit():
+        if not isinstance(val, str):
+            raise TypeError("Mobile phone must be a string")
+        elif len(val) != 10 or not val.isdigit():
             raise ValueError("Mobile phone must be a string of 10 digits")
         self.__mphone = val
 
@@ -129,7 +141,7 @@ class Order:
     @products.setter
     def products(self, val):
         if not val or not isinstance(val, list):
-            raise ValueError("Products must be passed")
+            raise ValueError("Products must be passed as a list")
         self.__products = val
 
     def count_total(self):
@@ -155,11 +167,13 @@ def main():
     product_list = []
 
     try:
-        shirt = Product(51.5, "White oversize shirt", 3, length=80, width=50)
+        shirt = Product(60, "White oversize shirt", 3, length=80, width=50)
         tv = Product(1999, "Big TV", 1, length=120, width=15, height=50)
         chair = Product(100, "Comfortable office chair", 2, width=65, height=120)
         product_list.extend([shirt, tv, chair])
     except ValueError as e:
+        print(f"Product instance creation is failed: {str(e)}")
+    except TypeError as e:
         print(f"Product instance creation is failed: {str(e)}")
 
     while True:
@@ -178,8 +192,13 @@ def main():
             prod = Product(float(price), desc, int(quantity), length=length, width=width, height=height)
             product_list.append(prod)
 
-        except ValueError as e:
-            print(str(e))
+        except ValueError or TypeError as e:
+            if "invalid literal for int()" in str(e):
+                print("Quantity should be an integer")
+            elif "could not convert string to float" in str(e):
+                print("Price and dimensions must be numbers")
+            else:
+                print(str(e))
 
     if product_list:
         order = Order(customer, product_list)
