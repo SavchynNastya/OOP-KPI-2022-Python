@@ -3,8 +3,6 @@ import re
 
 class FileProcessing:
     def __init__(self, file_name):
-        if not open(file_name, 'r'):
-            raise FileNotFoundError
         self.name = file_name
 
     def count_characters(self):
