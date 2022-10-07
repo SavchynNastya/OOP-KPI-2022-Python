@@ -3,12 +3,9 @@ import re
 
 class FileProcessing:
     def __init__(self, file_name):
+        if not open(file_name, 'r'):
+            raise FileNotFoundError
         self.name = file_name
-        try:
-            file = open(self.name, 'r')
-            file.close()
-        except IOError:
-            print("There's no such file")
 
     def count_characters(self):
         count = 0
@@ -42,8 +39,11 @@ class FileProcessing:
 
 def main():
     file_name = "for_task4.txt"
-    file_processing = FileProcessing(file_name)
-    print(file_processing.get_info())
+    try:
+        file_processing = FileProcessing(file_name)
+        print(file_processing.get_info())
+    except FileNotFoundError:
+        print("There's no such file")
 
 
 if __name__ == "__main__":
