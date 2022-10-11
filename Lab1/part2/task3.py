@@ -122,7 +122,6 @@ class Order:
     def __init__(self, cust, products):
         self.customer = cust
         self.products = products
-        self.total = 0.0
 
     @property
     def customer(self):
@@ -145,9 +144,10 @@ class Order:
         self.__products = val
 
     def count_total(self):
+        total = 0.0
         for i in range(len(self.products)):
-            self.total += self.products[i].price
-        return self.total
+            total += self.products[i].price * self.products[i].quantity
+        return total
 
     def get_product_info(self):
         return ''.join(list(map(str, self.products)))
