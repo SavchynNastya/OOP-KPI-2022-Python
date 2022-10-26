@@ -134,12 +134,12 @@ class Sunday(Monday):
 
 class Order:
     __DAYS = {"Mon": Monday(),
-            "Tues": Tuesday(),
-            "Wed": Wednesday(),
-            "Thur": Thursday(),
-            "Fri": Friday(),
-            "Sat": Saturday(),
-            "Sun": Sunday()}
+              "Tues": Tuesday(),
+              "Wed": Wednesday(),
+              "Thur": Thursday(),
+              "Fri": Friday(),
+              "Sat": Saturday(),
+              "Sun": Sunday()}
 
     def __init__(self, customer, *optional_ing):
         self.id = str(uuid.uuid4())
