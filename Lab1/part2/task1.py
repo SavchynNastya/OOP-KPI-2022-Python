@@ -64,3 +64,7 @@ if __name__ == "__main__":
 
 
 
+# import datetime
+# date = datetime.datetime(2022, 5, 17, 16)
+# date2 = datetime.datetime.now()
+# print(date > date2)

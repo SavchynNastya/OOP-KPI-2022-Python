@@ -142,7 +142,7 @@ class Order:
             "Sun": Sunday()}
 
     def __init__(self, customer, *optional_ing):
-        self.id = uuid.uuid4()
+        self.id = str(uuid.uuid4())
         self.customer = customer
         self.day = customer.day
         self.optional_ing = optional_ing
@@ -181,19 +181,9 @@ class Order:
         with open("pizzas.json", "r") as file:
             pizza_data = json.load(file)
         for ingredient in val:
-
-            ############?????
-            if not pizza_data["optional-ingredients"][ingredient]:
+            if ingredient not in pizza_data["optional-ingredients"]:
                 raise KeyError("Sorry, there is no such ingredient to add")
         self.__optional_ing = val
-
-    # def get_check(self, pizza_of_the_day, price):
-    #     return f"CHECK: {self.id}\n"\
-    #            f"Customer: {self.customer}"\
-    #            f"Ordered pizza: {pizza_of_the_day}\n"\
-    #            f"Added ingredients: {str(self.optional_ing) if self.optional_ing else '---'}\n"\
-    #            f"PRICE: {price}\n"\
-    #            f"Date: {datetime.datetime.now()}\n"
 
     def form_the_order(self):
         with open("orders.json", "r") as file:
@@ -211,8 +201,6 @@ class Order:
         addititional_price = 0
         orders[self.id]["additional ingredient"] = list()
         for ingredient in self.optional_ing:
-            # if ingredient not in pizza_data["optional-ingredients"]:
-            #     raise KeyError("There is no such ingredient to add")
             orders[self.id]["additional ingredient"].append(ingredient)
             addititional_price += pizza_data["optional-ingredients"][ingredient]
 
@@ -223,31 +211,11 @@ class Order:
             json.dump(orders, file, indent=4)
 
         return f"CHECK: {self.id}\n"\
-               f"Customer: {self.customer}"\
+               f"Customer: {self.customer}\n"\
                f"Ordered pizza: {self.day.name}\n"\
                f"Added ingredients: {str(self.optional_ing) if self.optional_ing else '---'}\n"\
                f"PRICE: {self.day.price + addititional_price}\n"\
                f"Date: {datetime.datetime.now()}\n"
-
-
-
-
-    # def form_the_order(self):
-    #     with open("pizzas.json", "r") as file:
-    #         pizza_data = json.load(file)
-    #     pizza_of_the_day = pizza_data["pizza-of-the-day"][self.day]["name"]
-    #     price = pizza_data["pizza-of-the-day"][self.day]["price"]
-    #
-    #     # ingredients = pizza_data["pizza-of-the-day"][self.day]["ingredients"]
-    #     # ingredients.extend(self.optional_ing)
-    #     # print(ingredients)
-    #
-    #     if self.optional_ing:
-    #         for ingredient in self.optional_ing:
-    #             price += pizza_data["optional-ingredients"][ingredient]
-    #
-    #     check = self.get_check(pizza_of_the_day, price)
-    #     return check
 
 
 def main():
@@ -255,7 +223,7 @@ def main():
         cust1 = Customer("Anthony", "Perkins")
         cust2 = Customer("Maria", "Reynold")
 
-        order1 = Order(cust1, "pineapple", "bell pepper")
+        order1 = Order(cust1, "corn", "bell pepper")
         order2 = Order(cust2)
 
         print(order1.form_the_order())
