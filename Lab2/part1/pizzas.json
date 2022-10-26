@@ -1,0 +1,95 @@
+{
+  "pizza-of-the-day": {
+    "Mon": {
+      "name": "4 cheeses",
+      "ingredients": [
+        "dough",
+        "white sauce",
+        "mozzarella",
+        "feta",
+        "cheddar",
+        "gorgonzola"
+      ],
+      "price": 200
+    },
+    "Tues": {
+      "name": "Pepperoni",
+      "ingredients": [
+        "dough",
+        "red sauce",
+        "pepperoni",
+        "mozzarella"
+      ],
+      "price": 220
+    },
+    "Wed": {
+      "name": "Capone",
+      "ingredients": [
+        "dough",
+        "white sauce",
+        "mushrooms",
+        "chicken",
+        "corn",
+        "mozzarella"
+      ],
+      "price": 170
+    },
+    "Thur": {
+      "name": "Rome",
+      "ingredients": [
+        "dough",
+        "red sauce",
+        "mozzarella",
+        "chorizo",
+        "red pepper"
+      ],
+      "price": 250
+    },
+    "Fri": {
+      "name": "Flame hot",
+      "ingredients": [
+        "dough",
+        "red sauce",
+        "red pepper",
+        "jalapeno",
+        "cheddar",
+        "pepperoni"
+      ],
+      "price": 230
+    },
+    "Sat": {
+      "name": "Pear Blue",
+      "ingredients": [
+        "dough",
+        "white sauce",
+        "walnuts",
+        "feta",
+        "dor blue",
+        "pear"
+      ],
+      "price": 280
+    },
+    "Sun": {
+      "name": "4 seas",
+      "ingredients": [
+        "dough",
+        "white sauce",
+        "shrimps",
+        "mozzarella",
+        "mussels",
+        "crab"
+      ],
+      "price": 300
+    }
+  },
+  "optional-ingredients": {
+    "cheese": 40,
+    "tomatoes": 20,
+    "mushrooms": 30,
+    "corn": 20,
+    "red pepper": 30,
+    "bell pepper": 30,
+    "roasted onion": 20,
+    "pepperoni": 40
+  }
+}

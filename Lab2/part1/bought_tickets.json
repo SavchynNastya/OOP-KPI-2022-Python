@@ -1,0 +1,18 @@
+{
+    "bought_tickets": {
+        "bee771cc-100b-4731-9761-32c095b75685": {
+            "name": "Mary",
+            "surname": "Brown",
+            "price": 175.0,
+            "desc": "Google Event",
+            "date": "2022-10-25 10:47:15.260001"
+        },
+        "1be9becd-c292-455b-90d7-8d2850c7987d": {
+            "name": "Daniel",
+            "surname": "Torini",
+            "price": 300.0,
+            "desc": "SoftServe Juniors Event",
+            "date": "2022-10-25 10:47:15.261020"
+        }
+    }
+}
