@@ -88,7 +88,7 @@ class Monday:
         if not val or not isinstance(val, (int, float)):
             raise TypeError("Price of the pizza must be an integer/float")
         if val <= 0:
-            raise TypeError("Price must be > 0")
+            raise ValueError("Price must be > 0")
         self.__price = val
 
     def __str__(self):
@@ -198,14 +198,14 @@ class Order:
         with open("pizzas.json", "r") as file:
             pizza_data = json.load(file)
 
-        addititional_price = 0
+        additional_price = 0
         orders[self.id]["additional ingredient"] = list()
         for ingredient in self.optional_ing:
             orders[self.id]["additional ingredient"].append(ingredient)
-            addititional_price += pizza_data["optional-ingredients"][ingredient]
+            additional_price += pizza_data["optional-ingredients"][ingredient]
 
-        orders[self.id]["additional price"] = addititional_price
-        orders[self.id]["summary price"] = addititional_price + self.day.price
+        orders[self.id]["additional price"] = additional_price
+        orders[self.id]["summary price"] = additional_price + self.day.price
 
         with open("orders.json", "w") as file:
             json.dump(orders, file, indent=4)
@@ -213,8 +213,8 @@ class Order:
         return f"CHECK: {self.id}\n"\
                f"Customer: {self.customer}\n"\
                f"Ordered pizza: {self.day.name}\n"\
-               f"Added ingredients: {str(self.optional_ing) if self.optional_ing else '---'}\n"\
-               f"PRICE: {self.day.price + addititional_price}\n"\
+               f"Added ingredients: {', '.join(str(x) for x in self.optional_ing) if self.optional_ing else '---'}\n"\
+               f"PRICE: {self.day.price + additional_price}\n"\
                f"Date: {datetime.datetime.now()}\n"
 
 
