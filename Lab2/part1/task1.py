@@ -77,10 +77,13 @@ class Student(RegularTicket):
 class Event:
 
     def __init__(self, hour, day, month, year, price, qty, desc=""):
+
         self.hour = hour
         self.day = day
         self.month = month
         self.year = year
+        self.check_date()
+
         self.desc = desc
         self.reg_price = price
         self.tickets_quantity = qty
@@ -141,8 +144,6 @@ class Event:
         if not val >= datetime.date.today().year:
             raise ValueError("Year should be current or higher")
         self.__year = val
-
-        self.check_date()
 
     @staticmethod
     def get_datetime(year, month, day, hour):
