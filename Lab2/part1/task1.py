@@ -126,6 +126,10 @@ class Event:
             raise ValueError("Month should be 1-12")
         self.__month = val
 
+    def check_date(self):
+        if self.get_datetime(self.year, self.month, self.day, self.hour) < datetime.datetime.now():
+            raise ValueError("You can not create event in past")
+
     @property
     def year(self):
         return self.__year
@@ -137,6 +141,8 @@ class Event:
         if not val >= datetime.date.today().year:
             raise ValueError("Year should be current or higher")
         self.__year = val
+
+        self.check_date()
 
     @staticmethod
     def get_datetime(year, month, day, hour):
