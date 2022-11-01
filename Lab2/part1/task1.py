@@ -51,33 +51,28 @@ class RegularTicket:
 
 
 class Advanced(RegularTicket):
-    _ADVANCE_COEF = 0.4  # -40%
-
-    def __init__(self, price):
+    def __init__(self, price, advance_coef=0.4):
         super().__init__(price)
-        self.price = self.price - self.price * self._ADVANCE_COEF
+        self.ADVANCE_COEF = advance_coef
+        self.price = self.price - self.price * self.ADVANCE_COEF
 
 
 class Late(RegularTicket):
-    _LATE_COEF = 0.1  # +10%
-
-    def __init__(self, price):
+    def __init__(self, price, late_coef=0.1):
         super().__init__(price)
-        self.price = self.price + self.price * self._LATE_COEF
+        self.LATE_COEF = late_coef
+        self.price = self.price + self.price * self.LATE_COEF
 
 
 class Student(RegularTicket):
-    _STUDENT_COEF = 0.5  # -50%
-
-    def __init__(self, price):
+    def __init__(self, price, student_coef=0.5):
         super().__init__(price)
-        self.price = self.price - self.price * self._STUDENT_COEF
+        self.STUDENT_COEF = student_coef
+        self.price = self.price - self.price * self.STUDENT_COEF
 
 
 class Event:
-
     def __init__(self, hour, day, month, year, price, qty, desc=""):
-
         self.hour = hour
         self.day = day
         self.month = month
@@ -183,18 +178,18 @@ class Event:
             raise TypeError("Description should be a string")
         self.__desc = val
 
-    def ticket_actual_price(self):
+    def ticket_actual_price(self, to_advanced=60, to_late=10):
         time_to_event = (self.get_datetime(self.year, self.month, self.day, self.hour)
                          - datetime.datetime.now()).days
 
         if time_to_event < 0:
             return "Sorry, time is up."
 
-        elif time_to_event >= 60:
+        elif time_to_event >= to_advanced:
             return f"You can buy ticket for ADVANCED price: {self.advanced_ticket.price}\n"\
                    f"For students - {self.student_ticket.price}\n"
 
-        elif 0 <= time_to_event <= 10:
+        elif 0 <= time_to_event <= to_late:
             return f"You can buy ticket for LATE price: {self.late_ticket.price}\n" \
                    f"For students - {self.student_ticket.price}\n"
 
@@ -208,7 +203,7 @@ class Event:
                f"{customer.name} {customer.surname}\n"\
                f"Date: {date}\n"
 
-    def buy_ticket(self, customer):
+    def buy_ticket(self, customer, to_advanced=60, to_late=10):
         if not customer or not isinstance(customer, Person):
             raise TypeError("Customer should be registered")
         if self.tickets_quantity <= 0:
@@ -225,10 +220,10 @@ class Event:
         if customer.is_student:
             ticket = self.student_ticket
 
-        elif time_to_event >= 60:
+        elif time_to_event >= to_advanced:
             ticket = self.advanced_ticket
 
-        elif 0 <= time_to_event <= 10:
+        elif 0 <= time_to_event <= to_late:
             ticket = self.late_ticket
 
         else:

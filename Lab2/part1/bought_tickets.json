@@ -13,6 +13,20 @@
             "price": 300.0,
             "desc": "SoftServe Juniors Event",
             "date": "2022-10-25 10:47:15.261020"
+        },
+        "eed51200-2780-4339-a3a2-d78a1e116817": {
+            "name": "Anna",
+            "surname": "Smith",
+            "price": 175.0,
+            "desc": "Google Event",
+            "date": "2022-11-01 14:51:23.893110"
+        },
+        "130e99d8-0ec8-4f0e-93f2-ecde12e82a34": {
+            "name": "Boris",
+            "surname": "Muller",
+            "price": 300.0,
+            "desc": "SoftServe Juniors Event",
+            "date": "2022-11-01 14:51:23.894070"
         }
     }
 }
