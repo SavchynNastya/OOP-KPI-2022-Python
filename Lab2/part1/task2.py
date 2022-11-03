@@ -180,9 +180,8 @@ class Order:
 
         with open("pizzas.json", "r") as file:
             pizza_data = json.load(file)
-        for ingredient in val:
-            if ingredient not in pizza_data["optional-ingredients"]:
-                raise KeyError("Sorry, there is no such ingredient to add")
+        if any(ingredient not in pizza_data["optional-ingredients"] for ingredient in val):
+            raise KeyError("Sorry, there is no such ingredient to add")
         self.__optional_ing = val
 
     def form_the_order(self):
@@ -213,7 +212,7 @@ class Order:
         return f"CHECK: {self.id}\n"\
                f"Customer: {self.customer}\n"\
                f"Ordered pizza: {self.day.name}\n"\
-               f"Added ingredients: {', '.join(str(x) for x in self.optional_ing) if self.optional_ing else '---'}\n"\
+               f"Added ingredients: {', '.join(self.optional_ing) if self.optional_ing else '---'}\n"\
                f"PRICE: {self.day.price + additional_price}\n"\
                f"Date: {datetime.datetime.now()}\n"
 
