@@ -180,9 +180,15 @@ class Order:
 
         with open("pizzas.json", "r") as file:
             pizza_data = json.load(file)
-        if any(ingredient not in pizza_data["optional-ingredients"] for ingredient in val):
-            raise KeyError("Sorry, there is no such ingredient to add")
-        self.__optional_ing = val
+
+        self.__optional_ing = []
+        for ing in val:
+            try:
+                if ing not in pizza_data["optional-ingredients"]:
+                    raise KeyError(f"Sorry, there is no {ing} to add")
+                self.__optional_ing.append(ing)
+            except KeyError as e:
+                print(str(e))
 
     def form_the_order(self):
         with open("orders.json", "r") as file:
@@ -234,6 +240,8 @@ def main():
         print(str(e))
     except KeyError as e:
         print(str(e))
+    except FileNotFoundError:
+        print("Sorry, filename is wrong")
 
 
 if __name__ == "__main__":
