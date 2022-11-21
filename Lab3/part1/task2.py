@@ -24,7 +24,6 @@ class Composition:
 
 
 class Item:
-    # STORAGE = []
 
     def __init__(self, name, quantity, price):
         self.name = name
@@ -76,13 +75,14 @@ class Item:
             if not val or not isinstance(val, int):
                 raise TypeError("Quantity should be integer")
             self.__quantity = self.quantity + val
-        elif self == self.name:
-            if not val or not isinstance(val, str):
-                raise TypeError("Name should be string")
-            # val = val.strip()
-            # self.__name = self.name + " "
-            self.__name = self.name + val
-            self.__name = self.name.strip()
+        else:
+            raise TypeError("You should pass a number to add")
+
+    def __add__(self, val):
+        if not val or not isinstance(val, str):
+            raise TypeError("Name should be string")
+        self.__name = f"{self.name} {val}"
+        self.__name = self.name.strip()
 
     def __isub__(self, val):
         print("__isub__")
@@ -94,25 +94,18 @@ class Item:
             if not val or not isinstance(val, int):
                 raise TypeError("Quantity should be integer")
             self.__quantity = self.quantity - val
-        # elif self == self.name:
-        #     if not val or not isinstance(val, str):
-        #         raise TypeError("Name should be string")
-        #     val = val.strip()
-        #     self.__name = self.name.replace(val, '')
-        #     self.__name = self.name.strip()
+        else:
+            raise TypeError("You should pass a number to subtract")
+
     def __sub__(self, val):
         if isinstance(val, str):
             val = val.strip()
             self.__name = self.name.replace(val, '')
             self.__name = self.name.strip()
+        else:
+            raise TypeError("Name should be a string")
 
     def __str__(self):
-        # res = "STORAGE\n"
-        # for item in self.STORAGE:
-        #     res += f"Item name: {item.name}\n" \
-        #            f"Price: {item.price}\n" \
-        #            f"Quantity available: {item.quantity}\n"
-        # return res
         return f"REPORT:\n" \
                f"Item name: {self.name}\n" \
                f"Price: {self.price}\n" \
@@ -133,12 +126,12 @@ def main():
         # print(item2)
 
         item1.price += 5000
-        item1.name += " White comfortable"
+        item1 + "White comfortable"
         item1 - "comfortable"
         item1.quantity += 5
 
         item2.price -= 200
-        item2.name += " SM-73820LS"
+        item2 + "SM-73820LS"
         item2 - "LS"
         item2.quantity -= 2
 
