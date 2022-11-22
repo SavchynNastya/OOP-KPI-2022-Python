@@ -1,9 +1,12 @@
-from math import gcd
+from math import gcd, ceil
 
 
 def reduce(func):
     def wrapped(*args):
         num, den = func(*args)
+        if (num < 0 and den < 0) or (num > 0 and den < 0):
+            num //= -1
+            den //= -1
         d = gcd(num, den)
         return Rational(num//d, den//d)
     return wrapped
@@ -43,9 +46,9 @@ class Rational:
             return TypeError("Fraction must be an instance of Rational class")
         num = self.__numerator * fr2.__numerator
         den = self.__denominator * fr2.__denominator
-        if num < 0 and den < 0:
-            num *= -1
-            den *= -1
+        # if num < 0 and den < 0:
+        #     num *= -1
+        #     den *= -1
         return num, den
 
     @reduce
@@ -54,9 +57,9 @@ class Rational:
             return TypeError("Fraction must be an instance of Rational class")
         num = self.__numerator * fr2.__denominator
         den = self.__denominator * fr2.__numerator
-        if num < 0 and den < 0:
-            num *= -1
-            den *= -1
+        # if num < 0 and den < 0:
+        #     num *= -1
+        #     den *= -1
         return num, den
 
     def __eq__(self, fr2):
@@ -84,37 +87,46 @@ class Rational:
             return TypeError("Fraction must be an instance of Rational class")
         return self.__numerator * fr2.__denominator > fr2.__numerator * self.__denominator
 
-    def get_fraction(self):
-        return f"{self.__numerator}/{self.__denominator}"
-
-    def get_to_float_fraction(self):
-        return f"{round((self.__numerator / self.__denominator), 2)}"
-
-    def print(self):
-        print(self.get_fraction())
-        print(self.get_to_float_fraction())
+    def __str__(self):
+        if self.__numerator > self.__denominator > 0 and self.__numerator > 0:
+            even_part = self.__numerator // self.__denominator
+            new_fr = Rational(self.__numerator, self.__denominator) - Rational(even_part, 1)
+            return f"Fraction: {even_part} {new_fr.__numerator if new_fr.__numerator > 0 else -new_fr.__numerator}" \
+                   f"/{new_fr.__denominator if new_fr.__denominator > 0 else -new_fr.__denominator}\n" \
+                   f"As float: {round((self.__numerator / self.__denominator), 2)}\n"
+        elif abs(self.__numerator) > self.__denominator and self.__numerator < 0 or self.__denominator < 0:
+            even_part = ceil(self.__numerator / self.__denominator)
+            new_fr = Rational(self.__numerator, self.__denominator) - Rational(even_part, 1)
+            return f"Fraction: {even_part} {new_fr.__numerator if new_fr.__numerator > 0 else -new_fr.__numerator}" \
+                   f"/{new_fr.__denominator if new_fr.__denominator > 0 else -new_fr.__denominator}\n" \
+                   f"As float: {round((self.__numerator / self.__denominator), 2)}\n"
+        else:
+            return f"Fraction: {self.__numerator}/{self.__denominator}\n" \
+                   f"As float: {round((self.__numerator / self.__denominator), 2)}\n"
 
 
 def main():
     try:
-        fr1 = Rational(5, 8)
+        fr1 = Rational(10, 8)
+        print(fr1)
         fr2 = Rational(4, 7)
+        print(fr2)
 
-        print("Sum: ")
+        print("--SUM--")
         fr = fr1 + fr2
-        fr.print()
+        print(fr)
 
-        print("Subtraction: ")
+        print("--SUBTRACTION--")
         fr = fr1 - fr2
-        fr.print()
+        print(fr)
 
-        print(f"Multiplication: ")
+        print(f"--MULTIPLICATION--")
         fr = fr1 * fr2
-        fr.print()
+        print(fr)
 
-        print(f"Division: ")
+        print(f"--DIVISION--")
         fr = fr1 / fr2
-        fr.print()
+        print(fr)
 
         print(f"Less than: {fr1 < fr2}")
         print(f"Greater than: {fr1 > fr2}")
@@ -122,42 +134,8 @@ def main():
         print(f"Greater or equal than: {fr1 >= fr2}")
         print(f"Equal to: {fr1 == fr2}")
 
-        f1 = input("Enter the numerator and denominator for the first fraction:")
-
-        num1, den1 = f1.split()
-
-        f1 = Rational(int(num1), int(den1))
-
-        f2 = input("Enter the numerator and denominator for the second fraction:")
-
-        num2, den2 = f2.split()
-        f2 = Rational(int(num2), int(den2))
-
-        print("Sum: ")
-        f = f1 + f2
-        f.print()
-
-        print("Subtraction: ")
-        f = f1 - f2
-        f.print()
-
-        print(f"Multiplication: ")
-        f = f1 * f2
-        f.print()
-
-        print(f"Division: ")
-        f = f1 / f2
-        f.print()
-
     except ValueError as e:
-        if "not enough values to unpack" in str(e):
-            print("Not enough arguments entered (should be 2)")
-        elif "too many values" in str(e):
-            print("Too many arguments entered (should be 2)")
-        elif "invalid literal" in str(e):
-            print("You should enter only integers")
-        else:
-            print(str(e))
+        print(str(e))
     except TypeError as e:
         print(str(e))
 

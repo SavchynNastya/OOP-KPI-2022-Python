@@ -19,7 +19,8 @@ class Composition:
     def __str__(self):
         res = "STORAGE\n"
         for item in self.STORAGE:
-            res += str(item)
+            if item.quantity > 0:
+                res += str(item)
         return res
 
 
@@ -29,8 +30,6 @@ class Item:
         self.name = name
         self.quantity = quantity
         self.price = price
-
-        # self.STORAGE.append(self)
 
     @property
     def name(self):
@@ -85,7 +84,6 @@ class Item:
         self.__name = self.name.strip()
 
     def __isub__(self, val):
-        print("__isub__")
         if self == self.price:
             if not val or not isinstance(val, (int, float)):
                 raise TypeError("Price should be integer or float")
@@ -94,6 +92,8 @@ class Item:
             if not val or not isinstance(val, int):
                 raise TypeError("Quantity should be integer")
             self.__quantity = self.quantity - val
+            if self.quantity < 0:
+                raise ValueError("You can't decrease a quantity to be less than null")
         else:
             raise TypeError("You should pass a number to subtract")
 
@@ -118,12 +118,13 @@ def main():
 
         item1 = Item("Sofa", 20, 17000.5)
         item2 = Item("Fridge", 16, 30700)
+        item3 = Item("TV", 10, 20500)
 
         storage + item1
         storage + item2
+        storage + item3
 
-        # print(item1)
-        # print(item2)
+        storage - item3
 
         item1.price += 5000
         item1 + "White comfortable"
@@ -134,9 +135,6 @@ def main():
         item2 + "SM-73820LS"
         item2 - "LS"
         item2.quantity -= 2
-
-        # print(item1)
-        # print(item2)
 
         print(storage)
 
