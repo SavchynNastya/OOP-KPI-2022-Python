@@ -112,10 +112,7 @@ class Course(ICourse):
         cursor.execute("SELECT id FROM courses WHERE name=?", (self.name, ))
         id = cursor.fetchone()
         if id:
-            # raise ValueError("Such course already exist")
-            return "Such course already exist"
-
-
+            raise ValueError("Such course already exist")
 
         add_to_table = "INSERT INTO courses VALUES " \
                        "(?, ?, ?, ?)"
@@ -125,19 +122,9 @@ class Course(ICourse):
         cursor.close()
 
     def __str__(self):
-        db_connection = sqlite3.connect('coursefactory.db')
-        cursor = db_connection.cursor()
-        cursor.execute(" SELECT count(name) FROM sqlite_master WHERE type='table' AND name='courses' ")
-        if cursor.fetchone()[0] == 0:
-            # raise ValueError("There is no courses added yet")
-            return "There is no courses added yet"
-        cursor.execute("SELECT name, teacher, programme FROM courses WHERE name=?",
-                       (self.name, ))
-        course = cursor.fetchone()
-        cursor.close()
-        return f"COURSE -{course[0]}-\n" \
-               f"Teacher - {course[1]}\n" \
-               f"Programme - {course[2]}\n"
+        return f"COURSE -{self.name}-\n" \
+               f"Teacher - {self.teacher}\n" \
+               f"Programme - {', '.join(self.programme)}\n"
 
 
 class ILocalCourse(ABC):
@@ -254,8 +241,7 @@ class Teacher(ITeacher):
         cursor.execute("SELECT id FROM teachers WHERE name=?", (self.name,))
         id = cursor.fetchone()
         if id:
-            # raise ValueError("Such teacher already exist")
-            return "Such teacher already exist"
+            raise ValueError("Such teacher already exist")
 
         cursor.execute("INSERT INTO teachers VALUES(?, ?)", (last_id+1, self.name))
         db_connection.commit()
@@ -267,26 +253,14 @@ class Teacher(ITeacher):
         cursor = db_connection.cursor()
         cursor.execute(" SELECT count(name) FROM sqlite_master WHERE type='table' AND name='courses' ")
         if cursor.fetchone()[0] == 0:
-            return f"{self.name} has no courses yet"
-            # raise ValueError("There is no courses created")
-        # get_by_teacher_name = "SELECT name, programme FROM courses WHERE teacher=%s"
+            raise ValueError("There is no courses created")
         cursor.execute("SELECT name, programme FROM courses WHERE teacher=?", (self.name, ))
         courses = cursor.fetchall()
         cursor.close()
         return courses
 
     def __str__(self):
-        db_connection = sqlite3.connect('coursefactory.db')
-        cursor = db_connection.cursor()
-        cursor.execute(" SELECT count(name) FROM sqlite_master WHERE type='table' AND name='teachers' ")
-        if cursor.fetchone()[0] == 0:
-            # raise ValueError("There is no teachers added yet")
-            return "There is no teachers added yet"
-        cursor.execute("SELECT name FROM teachers WHERE name=?",
-                       (self.name, ))
-        teacher = cursor.fetchone()
-        cursor.close()
-        return f"Teacher - {teacher[0]}\n"
+        return f"Teacher - {self.name}\n"
 
 
 class ICourseFactory(ABC):
